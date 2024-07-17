@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 19:19:52 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/17 22:44:17 by dolifero         ###   ########.fr       */
+/*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
+/*   Updated: 2024/07/17 23:14:19 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-t_data	*ft_get_data(void)
+void	*routine(void *arg)
 {
-	static t_data	*data;
+	t_philo	*philo;
+	t_data	*data;
+	int		left_fork;
+	int		right_fork;
 
-	if (!data)
+	philo = (t_philo *)arg;
+	data = ft_get_data();
+	left_fork = philo->num;
+	right_fork = (philo->num + 1) % data->philo_amount;
+	if (philo->num % 2 == 0)
+		ft_usleep(data->eat_time / 2);
+	while (1)
 	{
-		data = malloc(sizeof(data));
-		if (!data)
-			return (NULL);
+
+		if (data->meal_amount != -1 && philo->meals_eaten >= data->meal_amount)
+			break;
 	}
-	return (&data);
-}
-
-int	main(int argc, char **argv)
-{
-	t_data	data;
-
-	if (!check_args(argv, argc))
-		return (EXIT_FAILURE);
-	if (!parse_args(argv, argc, ft_get_data()))
-		return (EXIT_FAILURE);
-	printf("Shall thy path begin here\n");
-	return (EXIT_SUCCESS);
+	return (NULL);
 }
