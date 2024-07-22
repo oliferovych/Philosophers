@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:01:10 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/17 22:54:39 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/22 21:22:00 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ typedef __useconds_t useconds_t;
 
 typedef struct s_philo
 {
-	int			num;
-	int			meals_eaten;
-	long long	last_meal_t;
-	int			left_fork;
-	int			right_fork;
-	pthread_t	thread;
+	int				num;
+	int				meals_eaten;
+	long long		last_meal_time;
+	int				left_fork;
+	int				right_fork;
+	pthread_t		thread;
+	struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data
@@ -43,18 +44,25 @@ typedef struct s_data
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	death_checker;
+	int				someone_died;
 }				t_data;
 
 //ROUTINE
 void		*routine(void *arg);
-//STATIC
-t_data		*ft_get_data(void);
+void		monitor_init(t_data *data);
 //PARSING
 int			check_args(char **argv, int argc);
 int			parse_args(char **argv, int argc, t_data *data);
 //UTILS
+void		print_action(t_data *data, t_philo *philo, const char *str);
 long long	ft_get_time(void);
 void		ft_usleep(useconds_t usec);
 int			ft_atoi(const char *str);
+int			ft_isnum(char c);
+//FREEING
+void		free_data(t_data *data);
+//DEBUG
+void		ft_print_data(t_data *data);
 
 #endif

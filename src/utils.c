@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 19:34:38 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/17 22:53:46 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/22 21:32:53 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,12 @@ long long	ft_get_time(void)
 void	print_action(t_data *data, t_philo *philo, const char *str)
 {
 	pthread_mutex_lock(&data->print_mutex);
-	printf("%lld %d %s\n", ft_get_time() - data->start_time,
+	printf("%lld %d %s\n", (ft_get_time() - data->start_time),
 		(philo->num + 1), str);
 	pthread_mutex_unlock(&data->print_mutex);
+}
+
+int	ft_isnum(char c)
+{
+	return (c >= '0' && c <= '9');
 }
