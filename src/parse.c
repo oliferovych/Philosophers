@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:01:23 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 17:33:08 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 18:29:04 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	mutex_init(t_data *data)
 	{
 		free(data->forks);
 		free(data);
-		return ((void)printf("i fail here\n"), 0);
+		return (0);
 	}
 	return (1);
 }
@@ -76,7 +76,7 @@ int	philos_init(t_data *data)
 			free(data->forks);
 			free(data->philos);
 			free(data);
-			return (-1);
+			return (0);
 		}
 		i++;
 	}
@@ -97,13 +97,13 @@ int	parse_args(char **argv, int argc, t_data *data)
 	data->start_time = ft_get_time();
 	data->philos = malloc(sizeof(t_philo) * data->philo_amount);
 	if (!data->philos)
-		return (-1);
+		return (0);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_amount);
 	if (!data->forks)
-		return (-1);
+		return (0);
 	if (!mutex_init(data))
-		return (-1);
+		return (0);
 	if (!philos_init(data))
-		return (-1);
+		return (0);
 	return (1);
 }

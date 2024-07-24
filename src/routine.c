@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 17:36:09 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 18:23:12 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	ft_eat(t_philo *philo, t_data *data)
 	left_fork = philo->num;
 	right_fork = (philo->num + 1) % data->philo_amount;
 	pthread_mutex_lock(&data->forks[left_fork]);
-	print_action(data, philo, "has taken 1 fork");
+	print_action(data, philo, "has taken a fork");
 	pthread_mutex_lock(&data->forks[right_fork]);
-	print_action(data, philo, "has taken 2 fork");
+	print_action(data, philo, "has taken a fork");
 	pthread_mutex_lock(&data->death_checker);
 	philo->last_meal_time = ft_get_time();
 	pthread_mutex_unlock(&data->death_checker);
@@ -61,7 +61,6 @@ void	*routine(void *arg)
 		ft_sleep(philo, data);
 		if (data->meal_amount != -1 && philo->meals_eaten >= data->meal_amount)
 		{
-			print_action(data, philo, "i've eaten enough times!");
 			free_data(data);
 			exit(0);
 		}
