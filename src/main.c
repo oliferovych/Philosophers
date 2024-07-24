@@ -6,19 +6,15 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:19:52 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/22 21:26:24 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:57:25 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	ft_print_data(t_data *data)
+void	leaks(void)
 {
-	printf("philo_count: %d\n", data->philo_amount);
-	printf("time_to_die: %d\n", data->die_time);
-	printf("time_to_eat: %d\n", data->eat_time);
-	printf("time_to_sleep: %d\n", data->sleep_time);
-	printf("meal_count: %d\n", data->meal_amount);
+	system("leaks philo");
 }
 
 int	main(int argc, char **argv)

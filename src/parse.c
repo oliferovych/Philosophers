@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:01:23 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/22 21:27:33 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:33:08 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	parse_args(char **argv, int argc, t_data *data)
 		return (-1);
 	if (!mutex_init(data))
 		return (-1);
-	ft_print_data(data);
 	if (!philos_init(data))
 		return (-1);
 	return (1);
