@@ -6,17 +6,19 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/22 21:48:13 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:36:09 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	eat(t_philo *philo, t_data *data)
+void	ft_eat(t_philo *philo, t_data *data)
 {
 	int		left_fork;
 	int		right_fork;
 
+	if (data->someone_died)
+		return ;
 	left_fork = philo->num;
 	right_fork = (philo->num + 1) % data->philo_amount;
 	pthread_mutex_lock(&data->forks[left_fork]);
@@ -33,6 +35,14 @@ void	eat(t_philo *philo, t_data *data)
 	pthread_mutex_unlock(&data->forks[left_fork]);
 }
 
+void	ft_sleep(t_philo *philo, t_data *data)
+{
+	if (data->someone_died)
+		return ;
+	print_action(data, philo, "is sleeping");
+	usleep(data->sleep_time * 1000);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -47,15 +57,14 @@ void	*routine(void *arg)
 		if (data->someone_died)
 			break ;
 		print_action(data, philo, "is thinking");
-		if (data->someone_died)
-			break ;
-		eat(philo, data);
-		if (data->someone_died)
-			break ;
-		print_action(data, philo, "is sleeping");
-		usleep(data->sleep_time * 1000);
+		ft_eat(philo, data);
+		ft_sleep(philo, data);
 		if (data->meal_amount != -1 && philo->meals_eaten >= data->meal_amount)
-			break ;
+		{
+			print_action(data, philo, "i've eaten enough times!");
+			free_data(data);
+			exit(0);
+		}
 	}
 	return (NULL);
 }
