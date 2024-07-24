@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:01:10 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/22 21:22:00 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:02:13 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <sys/types.h>
-
-typedef __useconds_t useconds_t;
 
 typedef struct s_philo
 {
@@ -40,7 +38,7 @@ typedef struct s_data
 	useconds_t		eat_time;
 	useconds_t		die_time;
 	int				meal_amount;
-	useconds_t		start_time;
+	long long		start_time;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
