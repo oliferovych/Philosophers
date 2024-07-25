@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 18:23:12 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:59:58 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_eat(t_philo *philo, t_data *data)
 	philo->last_meal_time = ft_get_time();
 	pthread_mutex_unlock(&data->death_checker);
 	print_action(data, philo, "is eating");
-	usleep(data->eat_time * 1000);
+	ft_usleep(data->eat_time * 1000);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&data->forks[right_fork]);
 	pthread_mutex_unlock(&data->forks[left_fork]);
@@ -40,7 +40,7 @@ void	ft_sleep(t_philo *philo, t_data *data)
 	if (data->someone_died)
 		return ;
 	print_action(data, philo, "is sleeping");
-	usleep(data->sleep_time * 1000);
+	ft_usleep(data->sleep_time * 1000);
 }
 
 void	*routine(void *arg)
@@ -59,11 +59,15 @@ void	*routine(void *arg)
 		print_action(data, philo, "is thinking");
 		ft_eat(philo, data);
 		ft_sleep(philo, data);
+		pthread_mutex_lock(&data->death_checker);
 		if (data->meal_amount != -1 && philo->meals_eaten >= data->meal_amount)
 		{
-			free_data(data);
-			exit(0);
+			philo->finished = 1;
+			data->full++;
+			pthread_mutex_unlock(&data->death_checker);
+			break ;
 		}
+		pthread_mutex_unlock(&data->death_checker);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:01:23 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 18:29:04 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:23:17 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	check_args(char **argv, int argc)
 				return (printf("Non-numeric arguments\n"), 0);
 			j++;
 		}
+		if (ft_atoi(argv[i]) == 0)
+			return (printf("0 can't be an argument\n"), 0);
 		i++;
 	}
 	return (1);
@@ -70,6 +72,7 @@ int	philos_init(t_data *data)
 		data->philos[i].meals_eaten = 0;
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
+		data->philos[i].finished = 0;
 		if (pthread_create(&data->philos[i].thread, NULL,
 				routine, &data->philos[i]) != 0)
 		{
@@ -90,11 +93,11 @@ int	parse_args(char **argv, int argc, t_data *data)
 	data->eat_time = ft_atoi(argv[3]);
 	data->sleep_time = ft_atoi(argv[4]);
 	data->someone_died = 0;
+	data->full = 0;
 	if (argc == 6)
 		data->meal_amount = ft_atoi(argv[5]);
 	else
 		data->meal_amount = -1;
-	data->start_time = ft_get_time();
 	data->philos = malloc(sizeof(t_philo) * data->philo_amount);
 	if (!data->philos)
 		return (0);
@@ -103,6 +106,7 @@ int	parse_args(char **argv, int argc, t_data *data)
 		return (0);
 	if (!mutex_init(data))
 		return (0);
+	data->start_time = ft_get_time();
 	if (!philos_init(data))
 		return (0);
 	return (1);

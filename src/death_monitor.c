@@ -6,11 +6,20 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:18:13 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 18:22:41 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:20:49 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+int	check_all_finished(t_data *data)
+{
+	pthread_mutex_lock(&data->death_checker);
+	if (data->full == data->philo_amount)
+		return (pthread_mutex_unlock(&data->death_checker), 1);
+	pthread_mutex_unlock(&data->death_checker);
+	return (0);
+}
 
 void	*death_monitor(void *arg)
 {
@@ -25,18 +34,18 @@ void	*death_monitor(void *arg)
 		{
 			pthread_mutex_lock(&data->death_checker);
 			if (ft_get_time() - data->philos[i].last_meal_time
-				>= (long long)data->die_time)
+				>= (long long)data->die_time && !data->philos[i].finished)
 			{
-				print_action(data, &data->philos[i], "died");
+				print_action_death(data, &data->philos[i]);
 				data->someone_died = 1;
 				return (pthread_mutex_unlock(&data->death_checker), NULL);
 			}
 			pthread_mutex_unlock(&data->death_checker);
 			i++;
 		}
-		if (data->someone_died)
-			break ;
-		usleep(1000);
+		usleep(10000);
+		if (check_all_finished(data))
+			return (NULL);
 	}
 	return (NULL);
 }

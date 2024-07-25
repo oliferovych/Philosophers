@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:01:10 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 17:02:13 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:43:35 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_philo
 	long long		last_meal_time;
 	int				left_fork;
 	int				right_fork;
+	int				finished;
 	pthread_t		thread;
 	struct s_data	*data;
 }				t_philo;
@@ -37,6 +38,7 @@ typedef struct s_data
 	useconds_t		sleep_time;
 	useconds_t		eat_time;
 	useconds_t		die_time;
+	int				full;
 	int				meal_amount;
 	long long		start_time;
 	t_philo			*philos;
@@ -54,8 +56,10 @@ int			check_args(char **argv, int argc);
 int			parse_args(char **argv, int argc, t_data *data);
 //UTILS
 void		print_action(t_data *data, t_philo *philo, const char *str);
+void		print_action_death(t_data *data, t_philo *philo);
 long long	ft_get_time(void);
-void		ft_usleep(useconds_t usec);
+long long	ft_get_time_micro(void);
+void		ft_usleep(long long usec);
 int			ft_atoi(const char *str);
 int			ft_isnum(char c);
 //FREEING
