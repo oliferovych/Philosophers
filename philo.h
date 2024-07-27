@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:01:10 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/25 16:43:35 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:37:52 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo
 	int				right_fork;
 	int				finished;
 	pthread_t		thread;
+	pthread_mutex_t	mutex;
 	struct s_data	*data;
 }				t_philo;
 
@@ -45,6 +46,7 @@ typedef struct s_data
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_checker;
+	pthread_mutex_t	full_checker;
 	int				someone_died;
 }				t_data;
 
@@ -62,6 +64,7 @@ long long	ft_get_time_micro(void);
 void		ft_usleep(long long usec);
 int			ft_atoi(const char *str);
 int			ft_isnum(char c);
+int			ft_someone_dead(t_data *data);
 //FREEING
 void		free_data(t_data *data);
 //DEBUG

@@ -6,14 +6,14 @@
 #    By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 19:01:23 by dolifero          #+#    #+#              #
-#    Updated: 2024/07/24 18:11:44 by dolifero         ###   ########.fr        #
+#    Updated: 2024/07/27 16:09:13 by dolifero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME            = philo
 
 CC              = cc
-CFLAGS          = -Wall -Wextra -Werror
+CFLAGS          = -Wall -Wextra -Werror -g
 
 SRC_DIR         = ./src
 OBJ_DIR         = ./obj

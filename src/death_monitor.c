@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:18:13 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/25 17:20:49 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:14:59 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 int	check_all_finished(t_data *data)
 {
-	pthread_mutex_lock(&data->death_checker);
+	pthread_mutex_lock(&data->full_checker);
 	if (data->full == data->philo_amount)
-		return (pthread_mutex_unlock(&data->death_checker), 1);
-	pthread_mutex_unlock(&data->death_checker);
+		return (pthread_mutex_unlock(&data->full_checker), 1);
+	pthread_mutex_unlock(&data->full_checker);
 	return (0);
+}
+
+void	set_dead(t_data *data)
+{
+	pthread_mutex_lock(&data->death_checker);
+	data->someone_died = 1;
+	pthread_mutex_unlock(&data->death_checker);
 }
 
 void	*death_monitor(void *arg)
@@ -32,18 +39,18 @@ void	*death_monitor(void *arg)
 		i = 0;
 		while (i < data->philo_amount)
 		{
-			pthread_mutex_lock(&data->death_checker);
+			pthread_mutex_lock(&data->philos[i].mutex);
 			if (ft_get_time() - data->philos[i].last_meal_time
 				>= (long long)data->die_time && !data->philos[i].finished)
 			{
+				set_dead(data);
 				print_action_death(data, &data->philos[i]);
-				data->someone_died = 1;
-				return (pthread_mutex_unlock(&data->death_checker), NULL);
+				return (pthread_mutex_unlock(&data->philos[i].mutex), NULL);
 			}
-			pthread_mutex_unlock(&data->death_checker);
+			pthread_mutex_unlock(&data->philos[i].mutex);
 			i++;
 		}
-		usleep(10000);
+		usleep(1000);
 		if (check_all_finished(data))
 			return (NULL);
 	}
@@ -55,7 +62,6 @@ void	monitor_init(t_data *data)
 	pthread_t	monitor;
 	int			i;
 
-	i = 0;
 	if (pthread_create(&monitor, NULL, death_monitor, data) != 0)
 	{
 		free_data(data);
@@ -67,6 +73,7 @@ void	monitor_init(t_data *data)
 		free_data(data);
 		exit (EXIT_SUCCESS);
 	}
+	i = 0;
 	while (i < data->philo_amount)
 	{
 		pthread_join(data->philos[i].thread, NULL);

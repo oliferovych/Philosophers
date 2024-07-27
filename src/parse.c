@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:01:23 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/25 17:23:17 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 16:39:28 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	mutex_init(t_data *data)
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0
-		|| pthread_mutex_init(&data->death_checker, NULL) != 0)
+		|| pthread_mutex_init(&data->death_checker, NULL) != 0
+		|| pthread_mutex_init(&data->full_checker, NULL) != 0)
 	{
 		free(data->forks);
 		free(data);
@@ -73,8 +74,9 @@ int	philos_init(t_data *data)
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
 		data->philos[i].finished = 0;
-		if (pthread_create(&data->philos[i].thread, NULL,
-				routine, &data->philos[i]) != 0)
+		if (pthread_create(&data->philos[i].thread, NULL, routine,
+				&data->philos[i]) != 0
+			|| pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
 		{
 			free(data->forks);
 			free(data->philos);
