@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 20:01:23 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 16:39:28 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:57:03 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	mutex_init(t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
-			free(data->forks);
-			free(data);
-			return (0);
+			while (i-- > 0)
+				pthread_mutex_destroy(&data->forks[i]);
+			return (free(data->forks), free(data), 0);
 		}
 		i++;
 	}
@@ -55,9 +55,10 @@ int	mutex_init(t_data *data)
 		|| pthread_mutex_init(&data->death_checker, NULL) != 0
 		|| pthread_mutex_init(&data->full_checker, NULL) != 0)
 	{
-		free(data->forks);
-		free(data);
-		return (0);
+		i = data->philo_amount;
+		while (i-- > 0)
+			pthread_mutex_destroy(&data->forks[i]);
+		return (free(data->forks), free(data), 0);
 	}
 	return (1);
 }
@@ -74,9 +75,7 @@ int	philos_init(t_data *data)
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
 		data->philos[i].finished = 0;
-		if (pthread_create(&data->philos[i].thread, NULL, routine,
-				&data->philos[i]) != 0
-			|| pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&data->philos[i].mutex, NULL) != 0)
 		{
 			free(data->forks);
 			free(data->philos);
@@ -86,6 +85,23 @@ int	philos_init(t_data *data)
 		i++;
 	}
 	return (1);
+}
+
+void	create_philo_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philo_amount)
+	{
+		if (pthread_create(&data->philos[i].thread, NULL, routine,
+				&data->philos[i]) != 0)
+		{
+			free_data(data);
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
 }
 
 int	parse_args(char **argv, int argc, t_data *data)

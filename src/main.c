@@ -6,16 +6,11 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:19:52 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/24 17:57:25 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:54:23 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-void	leaks(void)
-{
-	system("leaks philo");
-}
 
 int	main(int argc, char **argv)
 {

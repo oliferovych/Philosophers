@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 17:11:39 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 19:12:23 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,9 @@ void	ft_unlock_forks(t_philo *philo, t_data *data)
 		pthread_mutex_unlock(&data->forks[left_fork]);
 		pthread_mutex_unlock(&data->forks[right_fork]);
 	}
-	else if (right_fork > left_fork)
-	{
-		pthread_mutex_unlock(&data->forks[right_fork]);
-		pthread_mutex_unlock(&data->forks[left_fork]);
-	}
 	else
 	{
+		pthread_mutex_unlock(&data->forks[right_fork]);
 		pthread_mutex_unlock(&data->forks[left_fork]);
 	}
 }
@@ -99,7 +95,7 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&data->full_checker);
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

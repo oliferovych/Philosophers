@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 19:01:10 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 16:37:52 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:54:41 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		monitor_init(t_data *data);
 //PARSING
 int			check_args(char **argv, int argc);
 int			parse_args(char **argv, int argc, t_data *data);
+void		create_philo_threads(t_data *data);
 //UTILS
 void		print_action(t_data *data, t_philo *philo, const char *str);
 void		print_action_death(t_data *data, t_philo *philo);
