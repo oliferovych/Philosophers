@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 22:46:17 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 19:12:23 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:12:05 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_take_forks(t_philo *philo, t_data *data)
 
 	left_fork = philo->num;
 	right_fork = (philo->num + 1) % data->philo_amount;
-	if (left_fork < right_fork)
+	if (philo->num % 2 == 0)
 	{
 		pthread_mutex_lock(&data->forks[left_fork]);
 		print_action(data, philo, "has taken a fork");
@@ -42,15 +42,15 @@ void	ft_unlock_forks(t_philo *philo, t_data *data)
 
 	left_fork = philo->num;
 	right_fork = (philo->num + 1) % data->philo_amount;
-	if (left_fork < right_fork)
+	if (philo->num % 2 == 0)
 	{
-		pthread_mutex_unlock(&data->forks[left_fork]);
 		pthread_mutex_unlock(&data->forks[right_fork]);
+		pthread_mutex_unlock(&data->forks[left_fork]);
 	}
 	else
 	{
-		pthread_mutex_unlock(&data->forks[right_fork]);
 		pthread_mutex_unlock(&data->forks[left_fork]);
+		pthread_mutex_unlock(&data->forks[right_fork]);
 	}
 }
 
@@ -59,10 +59,10 @@ void	ft_eat(t_philo *philo, t_data *data)
 	ft_take_forks(philo, data);
 	pthread_mutex_lock(&philo->mutex);
 	philo->last_meal_time = ft_get_time();
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->mutex);
 	print_action(data, philo, "is eating");
 	ft_usleep(data->eat_time * 1000);
-	philo->meals_eaten++;
 	ft_unlock_forks(philo, data);
 }
 
@@ -95,7 +95,8 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&data->full_checker);
-		usleep(1000);
+		if (data->philo_amount % 2 == 1)
+			usleep(1000);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:08:04 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 18:42:21 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:10:41 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ long long	ft_get_time_micro(void)
 
 void	ft_usleep(long long usec)
 {
-	long long start = ft_get_time_micro();
-	long long elapsed = 0;
-	const long long sleep_interval = 100;
+	long long		start;
+	long long		elapsed;
+	long long		sleep_interval;
 
+	sleep_interval = 500;
+	start = ft_get_time_micro();
+	elapsed = 0;
 	while (elapsed < usec)
 	{
 		usleep(sleep_interval);

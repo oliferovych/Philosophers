@@ -6,7 +6,7 @@
 /*   By: dolifero <dolifero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:18:13 by dolifero          #+#    #+#             */
-/*   Updated: 2024/07/27 19:00:14 by dolifero         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:13:27 by dolifero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	*death_monitor(void *arg)
 		}
 		if (check_all_finished(data))
 			return (NULL);
-		usleep(1000);
+		if (data->philo_amount % 2 == 1)
+			usleep(1000);
 	}
 	return (NULL);
 }
@@ -74,6 +75,7 @@ void	monitor_init(t_data *data)
 	int			i;
 
 	i = 0;
+	data->start_time = ft_get_time();
 	create_philo_threads(data);
 	if (pthread_create(&monitor, NULL, death_monitor, data) != 0)
 	{
